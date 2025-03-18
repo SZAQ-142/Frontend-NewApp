@@ -10,7 +10,7 @@ function EditItem() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${process.env.MONGO_URI}/items`)
+    fetch(`${process.env.REACT_APP_API_URL}/items`)
       .then((res) => {
         if (!res.ok) throw new Error("Item not found");
         return res.json();
@@ -30,7 +30,7 @@ function EditItem() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`${process.env.MONGO_URI}/items`, {
+    fetch(`${process.env.REACT_APP_API_URL}/items`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, description }),
