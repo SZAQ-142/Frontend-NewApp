@@ -5,14 +5,14 @@ function Home() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/items")  // Ensure correct API call
+    fetch(`${process.env.MONGO_URI}/items`)  // Ensure correct API call
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((error) => console.error("Error fetching items:", error));
   }, []);
 
   const deleteItem = (id) => {
-    fetch(`http://localhost:5000/api/items/${id}`, { method: "DELETE" })
+    fetch(`${process.env.MONGO_URI}/items`, { method: "DELETE" })
       .then(() => setItems(items.filter(item => item._id !== id)))
       .catch(error => console.error("Error deleting item:", error));
   };
