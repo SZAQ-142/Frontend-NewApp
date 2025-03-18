@@ -10,7 +10,7 @@ function EditItem() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/items`)
+    fetch(`${process.env.REACT_APP_API_URL}/items/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Item not found");
         return res.json();
@@ -27,20 +27,24 @@ function EditItem() {
       });
   }, [id]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    fetch(`${process.env.REACT_APP_API_URL}/items`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description }),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to update item");
-        return res.json();
-      })
-      .then(() => navigate("/")) // Redirect to home after update
-      .catch((error) => console.error("Error updating item:", error));
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/items/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update item");
+      }
+
+      navigate("/"); // Redirect to home after update
+    } catch (error) {
+      console.error("Error updating item:", error);
+    }
   };
 
   if (loading) return <p>Loading...</p>;
@@ -48,7 +52,7 @@ function EditItem() {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>✏️ Edit Item</h2>
+      <h2 style={styles.heading}>✏ Edit Item</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="text"

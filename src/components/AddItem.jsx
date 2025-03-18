@@ -4,21 +4,36 @@ function AddItem({ onItemAdded }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  // Debugging: Log API URL
+  console.log("API_URL:", API_URL);
+
+  if (!API_URL) {
+    console.error("❌ REACT_APP_API_URL is not defined in .env file!");
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    fetch(`${process.env.REACT_APP_API_URL}/items`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description }),
-    })
-      .then((res) => res.json())
-      .then((newItem) => {
-        onItemAdded(newItem); // Update the UI
-        setName("");
-        setDescription("");
-      })
-      .catch((error) => console.error("Error adding item:", error));
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/items`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add item");
+      }
+
+      const newItem = await response.json();
+      onItemAdded(newItem);
+      setName("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   };
 
   return (
