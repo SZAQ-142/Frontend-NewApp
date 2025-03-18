@@ -5,26 +5,21 @@ function Home() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/items`)
+    fetch("http://localhost:5000/api/items")  // Ensure correct API call
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((error) => console.error("Error fetching items:", error));
   }, []);
 
-  const deleteItem = async (id) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/items/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error("Failed to delete item");
-
-      setItems(items.filter(item => item._id !== id));
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+  const deleteItem = (id) => {
+    fetch(`http://localhost:5000/api/items/${id}`, { method: "DELETE" })
+      .then(() => setItems(items.filter(item => item._id !== id)))
+      .catch(error => console.error("Error deleting item:", error));
   };
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>🛍 Items List</h2>
+      <h2 style={styles.heading}>🛍️ Items List</h2>
       {items.length === 0 ? (
         <p style={styles.noItems}>No items found.</p>
       ) : (
@@ -34,8 +29,8 @@ function Home() {
               <p><strong>{item.name}</strong></p>
               <p>{item.description || "No description available."}</p>
               <div style={styles.buttons}>
-                <Link to={`/edit/${item._id}`} style={styles.editButton}>✏ Edit</Link>
-                <button onClick={() => deleteItem(item._id)} style={styles.deleteButton}>🗑 Delete</button>
+                <Link to={`/edit/${item._id}`} style={styles.editButton}>✏️ Edit</Link>
+                <button onClick={() => deleteItem(item._id)} style={styles.deleteButton}>🗑️ Delete</button>
               </div>
             </div>
           ))}
