@@ -11,6 +11,7 @@ function AddItem({ onItemAdded }) {
       const res = await fetch("https://backend-newapp-production.up.railway.app/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        mode:"cors",
         body: JSON.stringify({ name, description }),
       });
   
