@@ -7,7 +7,7 @@ import "./styles/styles.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Router>
     <Routes>
-      <Route path="/*" element={<App />} />
+      <App />
     </Routes>
   </Router>
 );

@@ -10,39 +10,41 @@ function EditItem() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-  const fetchItem = async () => {
-    try {
-      const res = await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`);
-      if (!res.ok) throw new Error("Item not found");
-      const data = await res.json();
-      setName(data.name);
-      setDescription(data.description);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching item:", error);
-      setError(error.message);
-      setLoading(false);
-    }
-  };
+    const fetchItem = async () => {
+      try {
+        const res = await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`);
+        if (!res.ok) throw new Error("Item not found");
+        const data = await res.json();
+        setName(data.name);
+        setDescription(data.description);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching item:", error);
+        setError(error.message);
+        setLoading(false);
+      }
+    };
 
-  fetchItem();
-}, [id]);
+    fetchItem();
+  }, [id]);
 
 
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description }),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to update item");
-        return res.json();
-      })
-      .then(() => navigate("/")) // Redirect to home after update
-      .catch((error) => console.error("Error updating item:", error));
+    try {
+      const res = await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description }),
+      });
+      if (!res.ok) throw new Error("Failed to update item");
+      const updatedItem = await res.json();
+      onItemUpdated(updatedItem); // Pass updated item to parent
+      navigate("/");
+    } catch (error) {
+      console.error("Error updating item:", error);
+      setError(error.message); // Show error to user
+    }
   };
 
   if (loading) return <p>Loading...</p>;

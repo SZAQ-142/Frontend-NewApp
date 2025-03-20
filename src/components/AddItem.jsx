@@ -3,34 +3,32 @@ import { useState } from "react";
 function AddItem({ onItemAdded }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     try {
       const res = await fetch("https://backend-newapp-production.up.railway.app/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        mode:"cors",
+        mode: "cors",
         body: JSON.stringify({ name, description }),
       });
-  
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-  
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const newItem = await res.json();
-      onItemAdded(newItem); // Update the UI
+      onItemAdded(newItem);
       setName("");
       setDescription("");
+      setError("");
     } catch (error) {
-      console.error("Error adding item:", error);
+      setError(error.message);
     }
   };
 
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>➕ Add Item</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="text"
