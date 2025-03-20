@@ -10,7 +10,7 @@ function EditItem() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/items/${id}`)
+    fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Item not found");
         return res.json();
@@ -30,7 +30,7 @@ function EditItem() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`http://localhost:5000/api/items/${id}`, {
+    fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, description }),

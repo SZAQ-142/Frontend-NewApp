@@ -7,7 +7,7 @@ function AddItem({ onItemAdded }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:5000/api/items", {
+    fetch("https://backend-newapp-production.up.railway.app/api/items", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, description }),
