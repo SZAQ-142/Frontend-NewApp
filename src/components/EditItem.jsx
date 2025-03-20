@@ -9,25 +9,25 @@ function EditItem() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        const res = await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`);
-        if (!res.ok) throw new Error("Item not found");
-        const data = await res.json();
-        setName(data.name);
-        setDescription(data.description);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching item:", error);
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-  
-    fetchItem();
-  }, [id]);
-  
+  uuseEffect(() => {
+  const fetchItem = async () => {
+    try {
+      const res = await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`);
+      if (!res.ok) throw new Error("Item not found");
+      const data = await res.json();
+      setName(data.name);
+      setDescription(data.description);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching item:", error);
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  fetchItem();
+}, [id]);
+
 
   const handleSubmit =async (e) => {
     e.preventDefault();
