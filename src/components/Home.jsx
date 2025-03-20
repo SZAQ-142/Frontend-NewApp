@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 function Home() {
   const [items, setItems] = useState([]);
 
-  useEffect(() => {
-    fetch("https://backend-newapp-production.up.railway.app/api/items")  // Ensure correct API call
+  useEffect(async() => {
+    await fetch("https://backend-newapp-production.up.railway.app/api/items")  // Ensure correct API call
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((error) => console.error("Error fetching items:", error));
   }, []);
 
-  const deleteItem = (id) => {
-    fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, { method: "DELETE" })
+  const deleteItem = async (id) => {
+    await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, { method: "DELETE" })
       .then(() => setItems(items.filter(item => item._id !== id)))
       .catch(error => console.error("Error deleting item:", error));
   };

@@ -4,10 +4,10 @@ function AddItem({ onItemAdded }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    fetch("https://backend-newapp-production.up.railway.app/api/items", {
+    await fetch("https://backend-newapp-production.up.railway.app/api/items", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, description }),

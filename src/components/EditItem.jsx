@@ -9,8 +9,8 @@ function EditItem() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`)
+  useEffect(async () => {
+    await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Item not found");
         return res.json();
@@ -27,10 +27,10 @@ function EditItem() {
       });
   }, [id]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
 
-    fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, {
+    await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, description }),
