@@ -4,21 +4,27 @@ function AddItem({ onItemAdded }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await fetch("https://backend-newapp-production.up.railway.app/api/items", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, description }),
-    })
-      .then((res) => res.json())
-      .then((newItem) => {
-        onItemAdded(newItem); // Update the UI
-        setName("");
-        setDescription("");
-      })
-      .catch((error) => console.error("Error adding item:", error));
+  
+    try {
+      const res = await fetch("https://backend-newapp-production.up.railway.app/api/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, description }),
+      });
+  
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+  
+      const newItem = await res.json();
+      onItemAdded(newItem); // Update the UI
+      setName("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   };
 
   return (

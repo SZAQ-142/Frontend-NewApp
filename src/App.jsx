@@ -1,7 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Home from "./components/Home";
-import AddItem from "./components/AddItem";
-import EditItem from "./components/EditItem";
+import Home from "./components/Home.jsx";
+import AddItem from "./components/AddItem.jsx";
+import EditItem from "./components/EditItem.jsx";
 
 function App() {
   return (
