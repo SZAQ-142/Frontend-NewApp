@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-function EditItem() {
+function EditItem({ onItemUpdated }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -24,10 +24,8 @@ function EditItem() {
         setLoading(false);
       }
     };
-
     fetchItem();
   }, [id]);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,11 +37,11 @@ function EditItem() {
       });
       if (!res.ok) throw new Error("Failed to update item");
       const updatedItem = await res.json();
-      onItemUpdated(updatedItem); // Pass updated item to parent
+      onItemUpdated(updatedItem);
       navigate("/");
     } catch (error) {
       console.error("Error updating item:", error);
-      setError(error.message); // Show error to user
+      setError(error.message);
     }
   };
 
@@ -56,6 +54,7 @@ function EditItem() {
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="text"
+          placeholder="Item name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -63,6 +62,7 @@ function EditItem() {
         />
         <input
           type="text"
+          placeholder="Description (optional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           style={styles.input}

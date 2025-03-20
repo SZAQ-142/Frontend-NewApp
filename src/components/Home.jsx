@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Home({ items, setItems }) {
@@ -18,7 +18,9 @@ function Home({ items, setItems }) {
 
   const deleteItem = async (id) => {
     try {
-      const res = await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, { method: "DELETE" });
+      const res = await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error("Failed to delete item");
       setItems(items.filter(item => item._id !== id));
     } catch (error) {
