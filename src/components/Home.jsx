@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Home({ items, setItems }) {
-  useEffect(() => {
-    fetch("https://backend-newapp-production.up.railway.app/api/items")
+function Home() {
+  const [items, setItems] = useState([]);
+
+  useEffect(async() => {
+    await fetch("https://backend-newapp-production.up.railway.app/api/items")  // Ensure correct API call
       .then((res) => res.json())
       .then((data) => setItems(data))
       .catch((error) => console.error("Error fetching items:", error));
-  }, [setItems]);
+  }, []);
 
   const deleteItem = async (id) => {
     await fetch(`https://backend-newapp-production.up.railway.app/api/items/${id}`, { method: "DELETE" })
